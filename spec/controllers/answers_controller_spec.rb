@@ -68,7 +68,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PUTCH #update' do
+  describe 'PATCH #update' do
     context 'with valid attributes' do
       it 'assigns the requested answer to @answer' do
         patch :update, params: { id: answer, answer: attributes_for(:answer) }
