@@ -15,8 +15,8 @@ feature 'User can create answer' do
       click_on 'Answer'
 
       expect(page).to have_content 'Your answer succesfully created.'
-      expect(page).to have_content 'MyString'
-      expect(page).to have_content 'MyText'
+      expect(page).to have_content 'Question String'
+      expect(page).to have_content 'Question Text'
       expect(page).to have_content 'Answer text'
     end
 
