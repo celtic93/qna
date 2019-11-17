@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: %i(show)
   before_action :find_question, only: %i(new create)
   before_action :find_answer, only: %i(show edit update destroy)
 
@@ -15,11 +16,10 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
 
-    if @answer.save
-      redirect_to @question
-    else
-      render :new
-    end
+    @answer.save ? flash[:notice] = 'Your answer succesfully created.' :
+                   flash[:alert] = @answer.errors.full_messages
+
+    redirect_to @question
   end
 
   def update
