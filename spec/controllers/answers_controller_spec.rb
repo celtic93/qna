@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
   let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, question: question, user: user) }
 
   describe 'GET #new' do
     before { login(user) }
@@ -49,7 +49,9 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'saves a new answer in database' do
         expect { post :create, params: { question_id: question,
+                                         user_id: user,
                                          answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+
       end
 
       it 'redirects to question' do
@@ -114,10 +116,10 @@ RSpec.describe AnswersController, type: :controller do
     before { login(user) }
     
     let!(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question, user: user) }
 
     it 'deletes the answer' do
-      expect { delete :destroy, params: { id: answer } }.to change(question.answers, :count).by(-1)
+      expect { delete :destroy, params: { id: answer, user_id: user } }.to change(question.answers, :count).by(-1)
     end
 
     it 'redirects to question' do

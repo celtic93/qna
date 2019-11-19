@@ -8,7 +8,7 @@ feature 'User can delete question' do
 
     sign_in(user)
     visit question_path(question)
-    click_on 'Delete'
+    click_on 'Delete question'
 
     expect(page).to have_content 'Question succesfully deleted.'
   end
@@ -18,7 +18,7 @@ feature 'User can delete question' do
 
     sign_in(user)
     visit question_path(question)
-    click_on 'Delete'
+    click_on 'Delete question'
 
     expect(page).to have_content "You can't delete someone else's question"
   end

@@ -12,4 +12,6 @@ p= link_to 'Delete question', question_path, method: :delete
 tr
   td
     - @question.answers.each do |answer|
-      = answer.body
+      p= answer.body    
+      p= link_to 'Delete answer', answer_path(id: answer.id), method: :delete
+      

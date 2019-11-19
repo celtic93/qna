@@ -31,8 +31,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to @answer.question
+    if current_user == @answer.user
+      @answer.destroy
+      redirect_to @answer.question, notice: 'Answer succesfully deleted.'
+    else
+      redirect_to @answer.question, notice: "You can't delete someone else's answer"
+    end
   end
 
   private
