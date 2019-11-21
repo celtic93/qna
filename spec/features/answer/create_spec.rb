@@ -2,10 +2,10 @@ require 'rails_helper'
 
 feature 'User can create answer' do
   given(:question) { create(:question) }
+  let!(:user) { create(:user) }
 
   describe 'Authenticated user' do
     background do
-      user = create(:user)
       sign_in(user)
       visit question_path(question)
     end
@@ -29,8 +29,6 @@ feature 'User can create answer' do
 
   scenario 'Unauthenticated user tryes to answers the question' do
     visit question_path(question)
-    click_on 'Answer'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_link 'Answer'
   end
 end

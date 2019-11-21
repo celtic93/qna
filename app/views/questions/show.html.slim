@@ -1,7 +1,8 @@
 h1= @question.title
 p= @question.body
 
-p= link_to 'Delete question', question_path, method: :delete
+- if current_user&.is_author?(@question)
+  p= link_to 'Delete question', question_path, method: :delete
 
 = form_with model: [@question, @answer], local: true do |f|
   = f.label :body
@@ -9,9 +10,4 @@ p= link_to 'Delete question', question_path, method: :delete
 
   = f.submit 'Answer'
 
-tr
-  td
-    - @question.answers.each do |answer|
-      p= answer.body    
-      p= link_to 'Delete answer', answer_path(id: answer.id), method: :delete
-      
+= render @question.answers

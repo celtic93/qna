@@ -15,15 +15,17 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
 
-    @answer.save ? flash[:notice] = 'Your answer succesfully created.' :
-                   flash[:alert] = @answer.errors.full_messages
-
-    redirect_to @question
+    if @answer.save
+      redirect_to @question, notice: 'Your answer succesfully created.'
+    else
+      redirect_to @question, alert: @answer.errors.full_messages
+    end
   end
 
   def update
-    if @answer.update(answer_params)
+    if current_user.is_author?(@answer) && @answer.update(answer_params)
       redirect_to @answer
     else
       render :edit
@@ -31,7 +33,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user == @answer.user
+    if current_user.is_author?(@answer)
       @answer.destroy
       redirect_to @answer.question, notice: 'Answer succesfully deleted.'
     else

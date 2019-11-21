@@ -13,6 +13,6 @@ feature 'User can sign out' do
   scenario 'Unauthenticated user tryes to sign out' do
     visit questions_path
 
-    expect(page).to_not have_content 'Log out'
+    expect(page).to_not have_link 'Log out'
   end
 end
