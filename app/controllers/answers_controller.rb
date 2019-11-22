@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i(show)
   before_action :find_question, only: %i(new create)
   before_action :find_answer, only: %i(show edit update destroy)
+  before_action :check_author, only: %i(update destroy)
 
   def new
     @answer = @question.answers.new
@@ -20,25 +21,21 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer succesfully created.'
     else
-      redirect_to @question, alert: @answer.errors.full_messages
+      render 'questions/show'
     end
   end
 
   def update
-    if current_user.is_author?(@answer) && @answer.update(answer_params)
-      redirect_to @answer
+    if @answer.update(answer_params)
+      redirect_to @answer.question
     else
-      render :edit
+      render 'questions/show', notice: 'Your answer succesfully updated.'
     end
   end
 
   def destroy
-    if current_user.is_author?(@answer)
-      @answer.destroy
-      redirect_to @answer.question, notice: 'Answer succesfully deleted.'
-    else
-      redirect_to @answer.question, notice: "You can't delete someone else's answer"
-    end
+    @answer.destroy
+    redirect_to @answer.question, notice: 'Answer succesfully deleted.'
   end
 
   private
@@ -53,5 +50,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def check_author
+    render 'questions/show', notice: 'Only author can do it' unless current_user.is_author?(@answer)
   end
 end

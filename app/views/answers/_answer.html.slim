@@ -1,4 +1,5 @@
-= answer.body
--if current_user&.is_author?(answer) 
-  = link_to 'Delete answer', answer_path(id: answer.id), method: :delete
+- if answer.valid?
+  = answer.body
+  - if current_user&.is_author?(answer) 
+    = link_to 'Delete answer', answer_path(answer), method: :delete
       

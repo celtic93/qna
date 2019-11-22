@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 feature 'User can sign out' do
-  scenario 'Authenticated user tryes to sign out' do
-    user = create(:user)
+  let(:user) { create(:user) }
 
+  scenario 'Authenticated user tryes to sign out' do
     sign_in(user)
     click_on 'Log out'
 

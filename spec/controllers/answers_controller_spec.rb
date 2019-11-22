@@ -7,8 +7,10 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #new' do
     context 'for authenticated user' do
-      before { login(user) }
-      before { get :new, params: { question_id: question } }
+      before do
+        login(user)
+        get :new, params: { question_id: question }
+      end
 
       it 'assigns a new Answer to @answer' do
         expect(assigns(:answer)).to be_a_new(Answer)
@@ -46,8 +48,10 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #edit' do
     context 'for authenticated user' do
-      before { login(user) }
-      before { get :edit, params: { id: answer } }
+      before do
+        login(user)
+        get :edit, params: { id: answer }
+      end
 
       it 'assigns the requested answer to @answer' do
         expect(assigns(:answer)).to eq answer
@@ -100,7 +104,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirects to question' do
         post :create, params: { question_id: question,
                                 answer: attributes_for(:answer, :invalid) }
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to render_template 'questions/show'
       end
     end
 
@@ -135,15 +139,17 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'body'
       end
 
-      it 'redirects to updated answer' do
+      it 'redirects to question' do
         patch :update, params: { id: answer, answer: attributes_for(:answer) }
-        expect(response).to redirect_to answer
+        expect(response).to redirect_to answer.question
       end
     end
 
     context 'with invalid attributes' do
-      before { login(user) }
-      before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) } }
+      before do
+        login(user)
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }
+      end
 
       it 'does not change answer' do
         answer.reload
@@ -152,15 +158,17 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 're-renders edit view' do
-        expect(response).to render_template :edit
+        expect(response).to render_template 'questions/show'
       end
     end
 
     context 'for not the author of the answer' do
       let(:not_author) { create(:user) }
 
-      before { login(not_author) }
-      before { patch :update, params: { id: answer, answer: { body: 'body' } } }
+      before do
+        login(not_author)
+        patch :update, params: { id: answer, answer: { body: 'body' } }
+      end
 
       it 'does not change answer' do
         answer.reload
@@ -169,7 +177,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 're-renders edit view' do
-        expect(response).to render_template :edit
+        expect(response).to render_template 'questions/show'
       end
     end
 
@@ -216,7 +224,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to question' do
         delete :destroy, params: { id: answer }
-        expect(response).to redirect_to answer.question
+        expect(response).to render_template 'questions/show'
       end
     end
 
