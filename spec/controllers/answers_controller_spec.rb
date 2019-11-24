@@ -157,7 +157,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'Answer Text'
       end
 
-      it 're-renders edit view' do
+      it 're-renders question' do
         expect(response).to render_template 'questions/show'
       end
     end
@@ -176,9 +176,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'Answer Text'
       end
 
-      it 're-renders edit view' do
-        expect(response).to render_template 'questions/show'
-      end
+      it 'redirects to question' do
+        expect(response).to redirect_to answer.question
+      end  
     end
 
     context 'for unauthenticated user' do
@@ -224,7 +224,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to question' do
         delete :destroy, params: { id: answer }
-        expect(response).to render_template 'questions/show'
+        expect(response).to redirect_to answer.question
       end
     end
 

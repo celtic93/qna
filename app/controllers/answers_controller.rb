@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :check_author, only: %i(update destroy)
 
   def new
-    @answer = @question.answers.new
+    @answer = Answer.new
   end
 
   def show
@@ -53,6 +53,6 @@ class AnswersController < ApplicationController
   end
 
   def check_author
-    render 'questions/show', notice: 'Only author can do it' unless current_user.is_author?(@answer)
+    redirect_to @answer.question, notice: 'Only author can do it' unless current_user.is_author?(@answer)
   end
 end
