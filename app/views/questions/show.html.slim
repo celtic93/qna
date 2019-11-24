@@ -1,4 +1,5 @@
-= render 'shared/errors', resource: @answer
+.answer-errors
+  = render 'shared/errors', resource: @answer
 
 h1= @question.title
 p= @question.body
@@ -6,10 +7,12 @@ p= @question.body
 - if current_user&.is_author?(@question)
   p= link_to 'Delete question', question_path(@question), method: :delete
 
-= form_with model: [@question, @answer], local: true do |f|
+
+= form_with model: [@question, @answer] do |f|
   = f.label :body
   = f.text_area :body
 
   = f.submit 'Answer'
 
-= render @question.answers
+.answers
+  = render @question.answers

@@ -82,14 +82,14 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves a new answer in database' do
         expect { post :create, params: { question_id: question,
                                          user_id: user,
-                                         answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+                                         answer: attributes_for(:answer) }, format: :js }.to change(question.answers, :count).by(1)
 
       end
 
-      it 'redirects to question' do
+      it 'renders create' do
         post :create, params: { question_id: question,
-                                answer: attributes_for(:answer) }
-        expect(response).to redirect_to assigns(:question)
+                                answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :create
       end
     end
 
@@ -98,13 +98,13 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'does not save the answer' do
         expect { post :create, params: { question_id: question,
-                                         answer: attributes_for(:answer, :invalid) } }.to_not change(question.answers, :count)
+                                         answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(question.answers, :count)
       end
 
-      it 'redirects to question' do
+      it 'renders create' do
         post :create, params: { question_id: question,
-                                answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template 'questions/show'
+                                answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :create
       end
     end
 
