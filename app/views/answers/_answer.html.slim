@@ -1,11 +1,12 @@
 - unless answer.errors.present?
-  p= answer.body
-  - if current_user&.is_author?(answer) 
-    p= link_to 'Delete answer', answer_path(answer), method: :delete
-    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+  div id="answer-#{answer.id}"
+    p= answer.body
+    - if current_user&.is_author?(answer) 
+      p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
-    = f.label :body
-    = f.text_area :body
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }  do |f|
+      = f.label :body
+      = f.text_area :body
 
-    = f.submit 'Save'
+      = f.submit 'Save'
