@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i(show)
   before_action :find_question, only: %i(new create)
-  before_action :find_answer, only: %i(show edit update destroy)
+  before_action :find_answer, only: %i(show edit update destroy best)
   before_action :check_author, only: %i(update destroy)
 
   def new
@@ -23,6 +23,16 @@ class AnswersController < ApplicationController
   def update
     @answer.update(answer_params)
     @question = @answer.question
+  end
+
+  def best
+    @question = @answer.question
+
+    if current_user.is_author?(@question)
+      @answer.update(best: true)
+    else
+      redirect_to @question
+    end
   end
 
   def destroy
