@@ -5,4 +5,19 @@ RSpec.describe Answer, type: :model do
   it { should belong_to :user }
 
   it { should validate_presence_of :body }
+
+  let(:question) { create(:question) }
+  let!(:best_answer) { create(:answer, question: question, best: true) }
+  let(:best_answer2) { create(:answer, question: question, best: true) }
+  let!(:answer) { create(:answer, question: question) }
+
+  context 'validation of uniqueness of the best answer' do
+    it 'should raise error for second best answer'  do
+      expect { best_answer2 }.to raise_error
+    end
+
+    it 'not should raise error for not the best answer' do
+      expect { answer }.not_to raise_error
+    end
+  end
 end
