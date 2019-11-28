@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can choose the best answer of his question' do
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question) }
-  given!(:best_answer) { create(:answer, question: question, best: true) }
+  given!(:best_answer) { create(:answer, question: question, body: 'Best', best: true) }
   given(:user) { create(:user) }
 
   describe 'Authenticated user tryes to choose' do
@@ -43,6 +43,19 @@ feature 'User can choose the best answer of his question' do
         expect(page).to have_content "It's the best answer"
       end
     end
+  end
+
+  scenario 'User sees the best answer first in the list', js: true do
+    sign_in(question.user)
+    visit question_path(question)
+
+    answers = page.all('.answer')
+
+    expect(answers.first.native.attribute('id')).to eq "answer-#{best_answer.id}"
+
+    click_on 'Best answer'
+
+    expect(answers.first.native.attribute('id')).to eq "answer-#{answer.id}"
   end
 
   scenario 'Unauthenticated user tryes to choose the best answer' do
