@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
     @question = @answer.question
 
     if current_user.is_author?(@question)
-      @answer.update(best: true)
+      @answer.make_best
     else
       redirect_to @question
     end

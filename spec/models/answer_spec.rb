@@ -20,4 +20,17 @@ RSpec.describe Answer, type: :model do
       expect { answer }.not_to raise_error
     end
   end
+
+  context '#make_best' do
+    before { answer.make_best }
+
+    it 'makes answer the best' do
+      expect(answer).to be_best
+    end
+
+    it 'makes best_answer not the best' do
+      best_answer.reload
+      expect(best_answer).to_not be_best
+    end
+  end
 end
