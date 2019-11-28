@@ -229,7 +229,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not change answer' do
         answer.reload
 
-        expect(answer.best).to be_falsey
+        expect(answer).to_not be_best
       end
 
       it 'redirects to question' do
@@ -243,7 +243,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not change answer' do
         answer.reload
 
-        expect(answer.best).to be_falsey
+        expect(answer).to_not be_best
       end
 
       it 'redirects to sign up page' do

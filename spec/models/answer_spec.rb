@@ -22,7 +22,7 @@ RSpec.describe Answer, type: :model do
   end
 
   context '#make_best' do
-    before { answer.make_best }
+    before { answer.make_best! }
 
     it 'makes answer the best' do
       expect(answer).to be_best
@@ -36,7 +36,7 @@ RSpec.describe Answer, type: :model do
 
   context '.default_scope' do
     let!(:new_best_answer) { create(:answer, question: question) }
-    before { new_best_answer.make_best }
+    before { new_best_answer.make_best! }
 
     it 'should sort array by best and created_at' do
       expect(question.answers.to_a).to be_eql [new_best_answer, best_answer, answer]

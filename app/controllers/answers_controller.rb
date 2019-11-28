@@ -3,6 +3,7 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i(new create)
   before_action :find_answer, only: %i(show edit update destroy best)
   before_action :check_author, only: %i(update destroy)
+  before_action :check_question_author, only: %i(best)
 
   def new
     @answer = Answer.new
@@ -27,12 +28,7 @@ class AnswersController < ApplicationController
 
   def best
     @question = @answer.question
-
-    if current_user.is_author?(@question)
-      @answer.make_best
-    else
-      redirect_to @question
-    end
+    @answer.make_best!
   end
 
   def destroy
@@ -55,5 +51,10 @@ class AnswersController < ApplicationController
 
   def check_author
     redirect_to @answer.question, notice: 'Only author can do it' unless current_user.is_author?(@answer)
+  end
+
+  def check_question_author
+    @question = @answer.question
+    redirect_to @question, notice: 'Only author can do it' unless current_user.is_author?(@question)
   end
 end
