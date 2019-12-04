@@ -3,7 +3,7 @@ div class="answer" id="answer-#{answer.id}"
 
   - if answer.files.attached?
     - answer.files.each do |file|
-      = link_to file.filename.to_s, url_for(file)
+      p= link_to file.filename.to_s, url_for(file)
 
   - if current_user&.is_author?(answer.question)
     - unless answer.best?
