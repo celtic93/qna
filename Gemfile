@@ -32,6 +32,8 @@ gem 'slim-rails'
 gem 'devise'
 gem 'jquery-rails'
 
+gem 'aws-sdk-s3', require: false
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.8'
