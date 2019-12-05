@@ -48,6 +48,9 @@ feature 'User can edit question' do
       sign_in(question.user)
       visit question_path(question)
 
+      expect(page).to_not have_link 'rails_helper.rb'
+      expect(page).to_not have_link 'spec_helper.rb'
+
       click_on 'Edit question'
 
       within '.question' do

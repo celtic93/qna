@@ -1,12 +1,6 @@
 div class="answer" id="answer-#{answer.id}"
   p= answer.body
-
-  - if answer.files.attached?
-    - answer.files.each do |file|
-      div id="file-#{file.id}"
-        p= link_to file.filename.to_s, url_for(file)
-        - if current_user&.is_author?(answer)
-          p= link_to 'Remove file', attachment_path(file), method: :delete, remote: true
+  = render 'shared/files', resource: answer
 
   - if current_user&.is_author?(answer.question)
     - unless answer.best?

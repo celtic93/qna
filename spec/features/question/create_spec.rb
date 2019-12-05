@@ -27,6 +27,9 @@ feature 'User can create question', %q{
     end
 
     scenario 'asks a question' do
+      expect(page).to_not have_link 'rails_helper.rb'
+      expect(page).to_not have_link 'spec_helper.rb'
+      
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
       attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]

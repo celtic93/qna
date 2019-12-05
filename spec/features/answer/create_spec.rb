@@ -20,6 +20,9 @@ feature 'User can create answer' do
     end
 
     scenario 'answers the question fith files', js: true do
+      expect(page).to_not have_link 'rails_helper.rb'
+      expect(page).to_not have_link 'spec_helper.rb'
+
       fill_in 'Body', with: 'Answer text'
       attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
