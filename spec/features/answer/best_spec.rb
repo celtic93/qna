@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'pry'
 
 feature 'User can choose the best answer of his question' do
   given(:question) { create(:question) }
