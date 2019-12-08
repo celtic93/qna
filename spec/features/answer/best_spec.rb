@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'pry'
 
 feature 'User can choose the best answer of his question' do
   given(:question) { create(:question) }
@@ -53,7 +54,7 @@ feature 'User can choose the best answer of his question' do
     expect(answers.first.native.attribute('id')).to eq "answer-#{best_answer.id}"
 
     click_on 'Best answer'
-    sleep 0.05
+    sleep 1
 
     new_answers = page.all('.answer')
     expect(new_answers.first.native.attribute('id')).to eq "answer-#{answer.id}"
