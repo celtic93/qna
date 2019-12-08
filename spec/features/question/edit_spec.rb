@@ -44,6 +44,25 @@ feature 'User can edit question' do
       expect(page).to have_content "Body can't be blank"
     end
 
+    scenario 'his question adding files', js: true do
+      sign_in(question.user)
+      visit question_path(question)
+
+      expect(page).to_not have_link 'rails_helper.rb'
+      expect(page).to_not have_link 'spec_helper.rb'
+
+      click_on 'Edit question'
+
+      within '.question' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to_not have_selector 'textarea'
+      end
+    end
+
     scenario "someone else's answer" do
       sign_in(user)
       visit question_path(question)
