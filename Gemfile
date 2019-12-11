@@ -33,6 +33,7 @@ gem 'devise'
 gem 'jquery-rails'
 
 gem 'aws-sdk-s3', require: false
+gem 'cocoon'
 
 group :development, :test do
   gem 'pry'
