@@ -18,7 +18,7 @@ feature 'User can add links to question' do
 
     click_on 'Add link'
 
-    within all('.new-link').last do
+    within all('.nested-fields').last do
       fill_in 'Link name', with: 'Google'
       fill_in 'Url', with: google_url
     end
@@ -43,7 +43,7 @@ feature 'User can add links to question' do
 
       click_on 'Add link'
 
-      within all('.new-link').last do
+      within all('.nested-fields').last do
         fill_in 'Link name', with: 'Google'
         fill_in 'Url', with: google_url
       end
