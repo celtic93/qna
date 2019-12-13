@@ -28,8 +28,8 @@ feature 'User can add links to question' do
       end
 
       click_on 'Ask'
-
-      expect(page).to have_link 'My gist', href: gist_url
+      
+      expect(page).to have_content 'Ruby Basic question 2'
       expect(page).to have_link 'Google', href: google_url
     end
 
@@ -67,7 +67,7 @@ feature 'User can add links to question' do
 
         click_on 'Save'
 
-        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_content 'Ruby Basic question 2'
         expect(page).to have_link 'Google', href: google_url
       end
     end

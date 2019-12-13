@@ -3,4 +3,8 @@
     p Links:
     ul
       - resource.links.each do |link|
-        li = link_to link.name, link.url
+        - if link.is_gist?
+          li
+            div class="gist" data-src="#{link.url}.json"
+        - else  
+          li = link_to link.name, link.url
