@@ -1,3 +1,5 @@
+require 'pry'
+
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i(index show)
   before_action :find_question, only: %i(show edit update destroy)
@@ -22,12 +24,8 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.new(question_params)
-
-    if @question.save
-      redirect_to @question, notice: 'Your question succesfully created.'
-    else
-      render :new
-    end
+    
+    redirect_to @question, notice: 'Your question succesfully created.' if @question.save
   end
 
   def update
