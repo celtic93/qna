@@ -9,7 +9,7 @@ div class="answer" id="answer-#{answer.id}"
                                                           method: :patch,
                                                           remote: true
     - else
-      p= "It's the best answer"
+      p It's the best answer
       - if answer.question.award.present?
         p= "#{answer.user.email} got the #{answer.question.award.title}"
 

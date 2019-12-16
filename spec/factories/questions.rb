@@ -20,6 +20,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_award do
+      after(:create) do |question|
+        create :award, question: question
+      end
+    end
+
     trait :with_award_and_answer do
       after(:create) do |question|
         create :award, question: question

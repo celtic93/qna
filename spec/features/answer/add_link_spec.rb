@@ -13,11 +13,12 @@ feature 'User can add links to answer' do
       visit question_path(question)
 
       fill_in 'Body', with: 'Answer text'
-
       fill_in 'Link name', with: 'My gist'
     end
 
-    scenario 'adds links', js: true do 
+    scenario 'adds links', js: true do
+      expect(page).to_not have_link 'Google', href: google_url
+      
       fill_in 'Url', with: gist_url
 
       click_on 'Add link'
@@ -60,6 +61,8 @@ feature 'User can add links to answer' do
     end
 
     scenario 'adds links', js: true do
+      expect(page).to_not have_link 'Google', href: google_url
+
       within '.answer' do
         fill_in 'Url', with: gist_url
 
