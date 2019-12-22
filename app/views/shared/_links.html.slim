@@ -1,0 +1,10 @@
+- if resource.links.present?
+  .links
+    p Links:
+    ul
+      - resource.links.each do |link|
+        - if link.is_gist?
+          li
+            div class="gist" data-src="#{link.url}.json"
+        - else  
+          li = link_to link.name, link.url

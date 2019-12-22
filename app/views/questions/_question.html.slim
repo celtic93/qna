@@ -1,6 +1,10 @@
 h1= question.title
 p= question.body
 = render 'shared/files', resource: question
+= render 'shared/links', resource: question
+
+- if question.award.present?
+  p= "The author of the best answer will get #{question.award.title} award"
 
 - if current_user&.is_author?(question)
   p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
@@ -16,5 +20,12 @@ p= question.body
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+
+  p Links:
+  p
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    .link
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
 
   = f.submit 'Save'

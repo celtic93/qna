@@ -26,7 +26,7 @@ feature 'User can create question', %q{
       expect(page).to have_content 'text text text'
     end
 
-    scenario 'asks a question' do
+    scenario 'asks a question with link' do
       expect(page).to_not have_link 'rails_helper.rb'
       expect(page).to_not have_link 'spec_helper.rb'
       
@@ -40,7 +40,7 @@ feature 'User can create question', %q{
       expect(page).to have_link 'spec_helper.rb'
     end
 
-    scenario 'asks a question with errors' do
+    scenario 'asks a question with errors', js: true do
       click_on 'Ask'
 
       expect(page).to have_content "Title can't be blank"

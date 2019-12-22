@@ -33,6 +33,8 @@ gem 'devise'
 gem 'jquery-rails'
 
 gem 'aws-sdk-s3', require: false
+gem 'cocoon'
+gem 'validate_url'
 
 group :development, :test do
   gem 'pry'
