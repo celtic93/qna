@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   concern :votable do
     member { post :vote }
+    member { post :revote }
   end
   
   resources :questions, concerns: [:votable] do

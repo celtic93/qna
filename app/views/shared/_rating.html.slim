@@ -11,3 +11,5 @@
                                             data: { type: :json }, method: :post, remote: true
     .revote-link class="#{'hidden' unless current_user&.voted?(resource)}"
       p You voted
+      = link_to 'Revote', polymorphic_url(resource, action: :revote),
+                                            data: { type: :json }, method: :post, remote: true
