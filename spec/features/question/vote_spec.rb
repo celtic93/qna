@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature 'User can vote' do
-  given (:user) { create(:user) }
+feature 'User can vote for question' do
+  given(:user) { create(:user) }
   given(:question) { create(:question) }
 
   describe 'Authenticated user' do
@@ -35,7 +35,7 @@ feature 'User can vote' do
 
   scenario 're-votes'
   scenario 'Author of question tryes to vote'
-  
+
   scenario 'Unauthenticated user tryes to vote' do
     visit question_path(question)
 
