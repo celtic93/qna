@@ -34,7 +34,14 @@ feature 'User can vote for question' do
   end
 
   scenario 're-votes'
-  scenario 'Author of question tryes to vote'
+  
+  scenario 'Author of question tryes to vote' do
+    sign_in(question.user)
+    visit question_path(question)
+
+    expect(page).to_not have_link 'Love it!'
+    expect(page).to_not have_link 'Hate it!'
+  end
 
   scenario 'Unauthenticated user tryes to vote' do
     visit question_path(question)
