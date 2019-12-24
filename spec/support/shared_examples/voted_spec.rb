@@ -35,6 +35,12 @@ shared_examples_for 'voted' do
                                        voted: { value: 1 },
                                        format: :json } }.to_not change(Vote, :count)
       end
+
+      it 'returns 204: No Content' do
+        post :vote, params: { id: voted, voted: { value: 1 }, format: :json }
+
+        expect(response.status).to eq 204
+      end
     end
 
     context 'for unauthorized user' do
@@ -42,6 +48,12 @@ shared_examples_for 'voted' do
         expect { post :vote, params: { id: voted,
                                        voted: { value: 1 },
                                        format: :json } }.to_not change(Vote, :count)
+      end
+
+      it 'returns 401: Unauthorized' do
+        post :vote, params: { id: voted, voted: { value: 1 }, format: :json }
+
+        expect(response.status).to eq 401
       end
     end
   end
@@ -72,11 +84,23 @@ shared_examples_for 'voted' do
       it 'does not delete a vote from db' do
         expect { post :revote, params: { id: voted, format: :json } }.to_not change(Vote, :count)
       end
+
+      it 'returns 200: OK' do
+        post :revote, params: { id: voted, format: :json }
+
+        expect(response.status).to eq 200
+      end
     end
 
     context 'for unauthorized user' do
       it 'does not create new vote' do
         expect { post :revote, params: { id: voted, format: :json } }.to_not change(Vote, :count)
+      end
+
+      it 'returns 401: Unauthorized' do
+        post :revote, params: { id: voted, format: :json }
+
+        expect(response.status).to eq 401
       end
     end
   end

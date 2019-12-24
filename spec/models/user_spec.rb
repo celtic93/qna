@@ -8,4 +8,13 @@ RSpec.describe User, type: :model do
 
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
+
+  let!(:questions) { create_list(:question, 2)}
+  let!(:user) { create(:user) }
+  let!(:vote) { create(:vote, user: user, votable: questions[0])}
+
+  it 'shows whether the user voted' do
+    expect(user.voted?(questions[0])).to be_truthy
+    expect(user.voted?(questions[1])).to be_falsey
+  end
 end

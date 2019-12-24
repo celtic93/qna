@@ -9,9 +9,9 @@ RSpec.describe Vote, type: :model do
 
   let(:user) { create(:user) }
   let(:question) { create(:question) }
+  let!(:vote) { create(:vote, user: user, votable: question) }
 
   it 'should validate uniquesness of vote' do
-    Vote.create(user: user, value: 1, votable: question)
     vote = Vote.new(user: user, value: 1, votable: question)
     expect(vote).not_to be_valid
   end

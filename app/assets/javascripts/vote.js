@@ -1,7 +1,6 @@
 $(document).on('turbolinks:load', function(){
-  $('.rating').on('ajax:success', function(e) {
-    console.log(e.detail[0]);
-    var votable = e.detail[0];
+  $('.rating').on('ajax:success', function(event) {
+    var votable = event.detail[0];
     var votable_id = '#' + votable["votable_type"] + '-' + votable["votable_id"];
     $($(votable_id).find('.rating-count')).html("Rating: " + votable["rating"]);
 
