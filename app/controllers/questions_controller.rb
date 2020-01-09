@@ -14,6 +14,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new 
     @answer.links.new
+    @comment = Comment.new
   end
 
   def new
@@ -33,6 +34,7 @@ class QuestionsController < ApplicationController
 
   def update
     @question.update(question_params)
+    @comment = Comment.new
   end
 
   def destroy
