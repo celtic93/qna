@@ -4,6 +4,7 @@ RSpec.describe Answer, type: :model do
   include_examples 'link association'
 
   it_behaves_like 'votable'
+  it_behaves_like 'commentable'
   
   it { should belong_to :question }
   it { should belong_to :user }

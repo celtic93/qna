@@ -2,8 +2,9 @@ require 'rails_helper'
 
 feature 'User can create comments' do
   
-  given (:user) { create(:user) }
-  given (:question) { create(:question) }
+  given! (:user) { create(:user) }
+  given! (:question) { create(:question) }
+  given! (:answer) { create(:answer, question: question) }
 
   describe 'Authenticated user' do
     background do
@@ -12,7 +13,16 @@ feature 'User can create comments' do
     end
 
     scenario 'comments a question', js: true do
-      within ".comments#question-#{question.id}" do
+      within ".comments-question-#{question.id}" do
+        fill_in 'Comment', with: 'Comment text'
+        click_on 'Comment'
+
+        expect(page).to have_content "Comment text. #{user.email}"
+      end
+    end
+
+    scenario 'comments an answer', js: true do
+      within ".comments-answer-#{answer.id}" do
         fill_in 'Comment', with: 'Comment text'
         click_on 'Comment'
 
@@ -21,7 +31,15 @@ feature 'User can create comments' do
     end
 
     scenario 'comments a question with errors', js: true do
-      within ".comments#question-#{question.id}" do
+      within ".comments-question-#{question.id}" do
+        click_on 'Comment'
+
+        expect(page).to have_content "Body can't be blank"
+      end
+    end
+
+    scenario 'comments an answer with errors', js: true do
+      within ".comments-answer-#{answer.id}" do
         click_on 'Comment'
 
         expect(page).to have_content "Body can't be blank"
