@@ -57,6 +57,7 @@ feature 'User can create question', %q{
 
     Capybara.using_session('quest') do
       visit questions_path
+      expect(page).to_not have_link 'Test question'
     end
 
     Capybara.using_session('user') do
