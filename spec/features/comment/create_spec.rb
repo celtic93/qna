@@ -47,6 +47,46 @@ feature 'User can create comments' do
     end
   end
 
+  scenario "comment appears on another user's page", js: true do
+    Capybara.using_session('user') do
+      sign_in(user)
+      visit question_path(question)
+    end
+
+    Capybara.using_session('quest') do
+      visit question_path(question)
+
+      expect(page).to_not have_content 'Question comment'
+      expect(page).to_not have_content 'Answer comment'
+    end
+
+    Capybara.using_session('user') do
+      within ".comments-question-#{question.id}" do
+        fill_in 'Comment', with: 'Question comment'
+        click_on 'Comment'
+
+        expect(page).to have_content "Question comment. #{user.email}"
+      end
+
+      within ".comments-answer-#{answer.id}" do
+        fill_in 'Comment', with: 'Answer comment'
+        click_on 'Comment'
+
+        expect(page).to have_content "Answer comment. #{user.email}"
+      end
+    end
+
+    Capybara.using_session('quest') do
+      within ".comments-question-#{question.id}" do
+        expect(page).to have_content "Question comment. #{user.email}"
+      end
+
+      within ".comments-answer-#{answer.id}" do
+        expect(page).to have_content "Answer comment. #{user.email}"
+      end
+    end
+  end
+
   scenario 'Unauthenticated user tryes to comment a question' do
     visit question_path(question)
     expect(page).to_not have_button 'Comment'
