@@ -3,6 +3,7 @@ div class="answer" id="answer-#{answer.id}"
   = render 'shared/files', resource: answer
   = render 'shared/links', resource: answer
   = render 'shared/rating', resource: answer
+  = render 'comments/comments', resource: answer
 
   - if current_user&.is_author?(answer.question)
     - unless answer.best?

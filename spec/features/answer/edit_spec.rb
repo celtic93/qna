@@ -18,7 +18,7 @@ feature 'User can edit answer' do
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector 'textarea#answer_body'
       end
     end
 
@@ -39,7 +39,7 @@ feature 'User can edit answer' do
       expect(page).to have_content "Body can't be blank"
     end
 
-    scenario 'his answer', js: true do
+    scenario 'his answer with files', js: true do
       sign_in(answer.user)
       visit question_path(question)
 
@@ -54,7 +54,7 @@ feature 'User can edit answer' do
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).to_not have_selector 'textarea#answer_body'
       end
     end
 

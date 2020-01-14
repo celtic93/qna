@@ -4,5 +4,15 @@ $(document).on('turbolinks:load', function(){
     $(this).hide();
     var questionId = $(this).data('questionId')
     $('form').show();
-  })
+  });
+
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: function() {
+      this.perform('follow');
+    },
+
+    received: function(data) {
+      $('.questions').append(data)
+    }
+  });
 });
