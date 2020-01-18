@@ -21,7 +21,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '.find_for_oauth' do
-    let!(:user) { create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123') }
     let(:service) { double('Services::FindForOauth') }
 
@@ -29,6 +28,15 @@ RSpec.describe User, type: :model do
       expect(Services::FindForOauth).to receive(:new).with(auth).and_return(service)
       expect(service).to receive(:call)
       User.find_for_oauth(auth)
+    end
+  end
+
+  describe '.email_verified' do
+    let!(:user2) { create(:user, email: 'change@me-12345-github.com')}
+
+    it "checks the user's email" do
+      expect(user).to be_email_verified
+      expect(user2).to_not be_email_verified
     end
   end
 end
