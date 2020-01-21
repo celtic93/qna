@@ -1,7 +1,4 @@
 class Services::FindForOauth
-  
-  TEMP_EMAIL_PREFIX = 'change@me'
-
   attr_reader :auth
 
   def initialize(auth)
@@ -9,22 +6,23 @@ class Services::FindForOauth
   end
 
   def call
-    authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
+    authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
     return authorization.user if authorization
 
     email = auth.info[:email]
-    user = User.where(email: email).first
+    user = User.find_by(email: email)
 
     if user
-      user.authorizations.create(provider: auth.provider, uid: auth.uid)
-    else
+      user.authorizations.create!(provider: auth.provider, uid: auth.uid)
+    elsif email
       password = Devise.friendly_token[0, 20]
-      user = User.new(email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com", 
-                      password: password,
-                      password_confirmation: password)
-      user.skip_confirmation!
-      user.save!      
-      user.authorizations.create(provider: auth.provider, uid: auth.uid)
+      user = User.create!(email: email, 
+                          password: password,
+                          password_confirmation: password,
+                          confirmed_at: Time.zone.now)     
+      user.authorizations.create!(provider: auth.provider, uid: auth.uid)
+    else
+      user = User.new
     end
 
     user

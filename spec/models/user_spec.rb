@@ -30,13 +30,4 @@ RSpec.describe User, type: :model do
       User.find_for_oauth(auth)
     end
   end
-
-  describe '.email_verified' do
-    let!(:user2) { create(:user, email: 'change@me-12345-github.com')}
-
-    it "checks the user's email" do
-      expect(user).to be_email_verified
-      expect(user2).to_not be_email_verified
-    end
-  end
 end

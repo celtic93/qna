@@ -10,8 +10,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :omniauthable, omniauth_providers: %i(github vkontakte)
 
-  TEMP_EMAIL_REGEX = /\Achange@me/
-
   def is_author?(resource)
     self.id == resource.user_id
   end
@@ -22,9 +20,5 @@ class User < ApplicationRecord
 
   def self.find_for_oauth(auth)
     Services::FindForOauth.new(auth).call
-  end
-
-  def email_verified?
-    email && email !~ TEMP_EMAIL_REGEX
   end
 end
