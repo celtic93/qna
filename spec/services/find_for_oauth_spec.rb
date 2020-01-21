@@ -17,7 +17,7 @@ RSpec.describe Services::FindForOauth do
     end
 
     it 'do not create new authorization' do
-      expect { subject.call }.to_not change(user.authorizations, :count)
+      expect { subject.call }.to_not change(Authorization, :count)
     end
   end
 
