@@ -43,6 +43,8 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
 
+gem 'cancancan'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.8'
