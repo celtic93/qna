@@ -3,9 +3,10 @@ class QuestionsController < ApplicationController
   
   before_action :authenticate_user!, except: %i(index show)
   before_action :find_question, only: %i(show edit update destroy)
-  before_action :check_author, only: %i(update destroy)
 
   after_action :publish_question, only: %i(create)
+
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -51,10 +52,6 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title, :body, files: [],
                                      links_attributes: [:id, :name, :url, :_destroy],
                                      award_attributes: [:title, :image])
-  end
-
-  def check_author
-    redirect_to @question, notice: 'Only author can do it' unless current_user.is_author?(@question)
   end
 
   def publish_question

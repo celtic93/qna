@@ -8,7 +8,7 @@ p= question.body
 - if question.award.present?
   p= "The author of the best answer will get #{question.award.title} award"
 
-- if current_user&.is_author?(question)
+- if can? :update, question
   p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
   p= link_to 'Delete question', question_path(question), method: :delete
 
