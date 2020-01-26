@@ -15,12 +15,12 @@ describe Ability, type: :model do
   end
 
   describe 'for user' do
-    let(:user) { create :user }
-    let(:question) { create(:question, :with_file, user: user) }
-    let(:answer) { create(:answer, user: user, question: question) }
-    let(:other_user) { create :user }
-    let(:other_question) { create(:question, :with_file, user: other_user) }
-    let(:other_answer) { create(:answer, user: other_user, question: other_question) }
+    let(:user) { build(:user) }
+    let(:question) { build(:question, :with_file, user: user) }
+    let(:answer) { build(:answer, user: user, question: question) }
+    let(:other_user) { create(:user) }
+    let(:other_question) { build(:question, :with_file, user: other_user) }
+    let(:other_answer) { build(:answer, user: other_user, question: other_question) }
     
 
     it { should be_able_to :read, Question }
