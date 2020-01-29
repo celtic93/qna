@@ -45,6 +45,8 @@ gem 'omniauth-vkontakte'
 
 gem 'cancancan'
 
+gem 'doorkeeper'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.8'
