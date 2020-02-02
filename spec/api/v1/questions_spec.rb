@@ -133,4 +133,217 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'POST api/v1/questions' do
+    let(:headers) { { 'ACCEPT' => 'application/json' } }
+
+    it_behaves_like 'API authorizable' do
+      let(:method) { :post }
+      let(:api_path) { '/api/v1/questions' }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      context 'with valid attributes' do
+        let(:do_request) { post '/api/v1/questions',
+                           headers: headers, 
+                           params: { access_token: access_token.token,
+                                     question: { title: 'Title through API', body: 'Body through API' } } }
+
+        it 'saves a new question in database' do
+          expect { do_request }.to change(Question, :count).by(1)
+        end
+
+        it 'returns question with right attributes' do
+          do_request
+
+          expect(json['question']['title']).to eq 'Title through API'
+          expect(json['question']['body']).to eq 'Body through API'
+        end
+
+        it 'returns all public fields' do
+          do_request
+
+          %w(id title body created_at updated_at).each do |attr|
+            expect(json['question']).to have_key(attr)
+          end
+        end
+
+        it 'returns 200 status' do
+          do_request
+          expect(response).to be_successful
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:do_request) { post '/api/v1/questions',
+                           headers: headers, 
+                           params: { access_token: access_token.token,
+                                     question: attributes_for(:question, :invalid) } }
+                                     
+        it 'does not saves a new question in database' do
+          expect { do_request }.to_not change(Question, :count)
+        end
+
+        it 'returns 422 status' do
+          do_request
+          expect(response.status).to eq 422
+        end
+      end
+    end
+  end
+
+  describe 'PATCH api/v1/questions/:id' do
+    let(:headers) { { 'ACCEPT' => 'application/json' } }
+    let(:author) { create(:user) }
+    let(:question) { create(:question, user: author) }
+
+    it_behaves_like 'API authorizable' do
+      let(:method) { :patch }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+
+      context 'with valid attributes' do
+        before { patch "/api/v1/questions/#{question.id}",
+                 headers: headers, 
+                 params: { access_token: access_token.token,
+                 question: { title: 'New title through API', body: 'New body through API' } } }
+
+        it 'assigns the requested question to @question' do
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          question.reload
+
+          expect(question.title).to eq 'New title through API'
+          expect(question.body).to eq 'New body through API'
+        end
+
+        it 'returns question with updated attributes' do
+          expect(json['question']['title']).to eq 'New title through API'
+          expect(json['question']['body']).to eq 'New body through API'
+        end
+
+        it 'returns all public fields' do
+          question.reload
+
+          %w(id title body created_at updated_at).each do |attr|
+            expect(json['question'][attr]).to eq question.send(attr).as_json
+          end
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end
+      end
+
+      context 'with invalid attributes' do
+        before { patch "/api/v1/questions/#{question.id}",
+                 headers: headers, 
+                 params: { access_token: access_token.token,
+                 question: attributes_for(:question, :invalid) } }
+
+        it 'assigns the requested question to @question' do
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'does not changes question attributes' do
+          question.reload
+
+          expect(question.title).to eq question.title
+          expect(question.body).to eq question.body
+        end
+
+        it 'returns question errors' do
+          expect(json['errors']['title'].first).to eq "can't be blank"
+        end
+
+        it 'returns 422 status' do
+          expect(response.status).to eq 422
+        end
+      end
+
+      context 'for not the author of the question' do
+        let(:other_access_token) { create(:access_token) }
+
+        before { patch "/api/v1/questions/#{question.id}",
+                 headers: headers, 
+                 params: { access_token: other_access_token.token,
+                 question: { title: 'New title through API', body: 'New body through API' } } }
+
+        it 'does not changes question attributes' do
+          question.reload
+
+          expect(question.title).to eq question.title
+          expect(question.body).to eq question.body
+        end
+
+        it 'returns unsuccessful status' do
+          expect(response).to_not be_successful
+        end
+      end
+    end
+  end
+
+  describe 'DELETE api/v1/questions/:id' do
+    let(:headers) { { 'ACCEPT' => 'application/json' } }
+    let(:author) { create(:user) }
+    let!(:question) { create(:question, user: author) }
+
+    it_behaves_like 'API authorizable' do
+      let(:method) { :delete }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+
+      context 'for the author of the question' do
+        let(:do_request) { delete "/api/v1/questions/#{question.id}",
+                           headers: headers, 
+                           params: { access_token: access_token.token } }
+
+        it 'assigns the requested question to @question' do
+          do_request
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'deletes the question from database' do
+          expect { do_request }.to change(Question, :count).by(-1)
+        end
+
+        it 'returns 200 status' do
+          do_request
+          expect(response).to be_successful
+        end
+      end
+
+      context 'for not the author of the question' do
+        let(:other_access_token) { create(:access_token) }
+
+        let(:do_request) { delete "/api/v1/questions/#{question.id}",
+                           headers: headers, 
+                           params: { access_token: other_access_token.token } }
+
+        it 'assigns the requested question to @question' do
+          do_request
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'does not deletes the question from database' do
+          expect { do_request }.to_not change(Question, :count)
+        end
+
+        it 'returns unsuccessful status' do
+          do_request
+          expect(response).to_not be_successful
+        end
+      end
+    end
+  end
 end
