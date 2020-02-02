@@ -25,7 +25,7 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
 
-      resources :questions, only: [:index] do
+      resources :questions, only: %i(index show) do
         resources :answers
       end
     end
