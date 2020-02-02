@@ -37,5 +37,7 @@ class Ability
     end
 
     can :me, User
+
+    can :read, User
   end
 end
