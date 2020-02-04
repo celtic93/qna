@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       end
 
       resources :questions, except: %i(new edit) do
-        resources :answers, only: %i(index show), shallow: true
+        resources :answers, except: %i(new edit), shallow: true
       end
     end
   end
