@@ -104,9 +104,9 @@ shared_examples_for 'API resource creatable' do
       end
     end
 
-    it 'returns 200 status' do
+    it 'returns 201 status' do
       do_valid_request
-      expect(response).to be_successful
+      expect(response.status).to eq 201
     end
   end
 
