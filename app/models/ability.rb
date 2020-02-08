@@ -35,5 +35,9 @@ class Ability
     can :destroy, ActiveStorage::Attachment do |attachment|
       user.is_author?(attachment.record)
     end
+
+    can :me, User
+
+    can :read, User
   end
 end
