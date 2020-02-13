@@ -19,6 +19,6 @@ class Question < ApplicationRecord
   private
 
   def new_answer_subscribe
-    subscriptions.create(user: user)
+    subscriptions.create!(user: user)
   end
 end

@@ -21,7 +21,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
       it 'assigns new subscription to current_user' do
         subscribe
-        expect(question.subscriptions.last.user_id).to eq user.id
+        expect(question.subscriptions.last).to eq user.subscriptions.last
       end
     end
 

@@ -11,7 +11,7 @@ class Answer < ApplicationRecord
   validates :body, presence: true
   validates :best, uniqueness: { scope: :question_id, best: true }, if: :best?
 
-  after_create :send_for_subscribers
+  after_commit :send_for_subscribers, on: :create
 
   default_scope { order('best DESC, created_at') }
 
@@ -26,6 +26,7 @@ class Answer < ApplicationRecord
   private
 
   def send_for_subscribers
-    NewAnswerJob.perform_later(self)
+    answer = Answer.where(id: id).includes(question: { subscriptions: :user }).first
+    NewAnswerJob.perform_later(answer)
   end
 end
