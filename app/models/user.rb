@@ -19,6 +19,10 @@ class User < ApplicationRecord
     votes.where(votable: resource).present?
   end
 
+  def subscribed?(question)
+    subscriptions.find_by(question_id: question.id).present?
+  end
+
   def self.find_for_oauth(auth)
     Services::FindForOauth.new(auth).call
   end

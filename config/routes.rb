@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   resources :attachments, only: :destroy
   resources :awards, only: :index
+  resources :subscriptions, only: [:create, :destroy]
 
   namespace :api do
     namespace :v1 do

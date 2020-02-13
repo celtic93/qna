@@ -20,9 +20,11 @@ class Ability
 
     can :read, Award
 
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscription]
 
     can [:update, :destroy], [Question, Answer], { user_id: user.id }
+
+    can :destroy, Subscription, user_id: user.id
 
     can [:vote, :revote], [Question, Answer] do |voted|
       !user.is_author?(voted)
