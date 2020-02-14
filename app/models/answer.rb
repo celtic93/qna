@@ -26,7 +26,6 @@ class Answer < ApplicationRecord
   private
 
   def send_for_subscribers
-    answer = Answer.where(id: id).includes(question: { subscriptions: :user }).first
-    NewAnswerJob.perform_later(answer)
+    NewAnswerJob.perform_later(self)
   end
 end
