@@ -1,9 +1,4 @@
--if @questions.present?
-  h1 New QNA questions
+h1 New QNA questions
 
-  - @questions.each do |question|
-    p= link_to question.title, url_for(question)
--else
-  h1 There wasn't a single question for yesterday. 
-    But you always can #{link_to "ask something", questions_url} and get answer.
-    Have a nice day!
+- @questions.each do |question|
+  p= link_to question.title, url_for(question)
