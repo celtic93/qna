@@ -11,6 +11,8 @@ class Answer < ApplicationRecord
   validates :body, presence: true
   validates :best, uniqueness: { scope: :question_id, best: true }, if: :best?
 
+  after_commit :send_for_subscribers, on: :create
+
   default_scope { order('best DESC, created_at') }
 
   def make_best!
@@ -19,5 +21,11 @@ class Answer < ApplicationRecord
       update!(best: true)
       question.award&.update!(user: user)
     end
+  end
+
+  private
+
+  def send_for_subscribers
+    NewAnswerJob.perform_later(self)
   end
 end

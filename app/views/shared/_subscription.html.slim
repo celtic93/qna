@@ -1,0 +1,10 @@
+- if can?(:create, Subscription)
+  .subscription
+    -unless current_user.subscribed?(question)
+      p= link_to 'Subscribe', subscriptions_path(id: question.id),
+                              remote: true,
+                              method: :post
+    -else
+      p= link_to 'Unsubscribe', subscription_path(id: question.id),
+                                remote: true,
+                                method: :delete

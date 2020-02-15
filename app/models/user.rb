@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :votes
   has_many :comments
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
@@ -16,6 +17,10 @@ class User < ApplicationRecord
 
   def voted?(resource)
     votes.where(votable: resource).present?
+  end
+
+  def subscribed?(question)
+    subscriptions.exists?(question_id: question.id)
   end
 
   def self.find_for_oauth(auth)
