@@ -1,0 +1,7 @@
+p= "Search results for #{@query}:"
+.search-results
+  - if @search_results.empty?
+    p Nothing was found
+  - else
+    - @search_results.each do |result|
+      = render partial: result.class.to_s.downcase, locals: { resource: result }
