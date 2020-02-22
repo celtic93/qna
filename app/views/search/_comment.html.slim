@@ -1,0 +1,5 @@
+- commentable = resource.commentable_type == 'Question' ? resource.commentable : resource.commentable.question
+
+p= commentable.title
+p= resource.body
+p= resource.user.email
