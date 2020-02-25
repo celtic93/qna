@@ -57,6 +57,10 @@ gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'database_cleaner'
 
+gem 'ed25519', '>= 1.2', '< 2.0'
+gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
+gem 'mini_racer'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.8'
@@ -71,6 +75,12 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'letter_opener'
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :test do
