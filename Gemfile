@@ -60,6 +60,7 @@ gem 'database_cleaner'
 gem 'ed25519', '>= 1.2', '< 2.0'
 gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
 gem 'mini_racer'
+gem 'sprockets', '3.6.3'
 
 group :development, :test do
   gem 'pry'
