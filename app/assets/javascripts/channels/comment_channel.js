@@ -7,11 +7,12 @@ $(document).on('turbolinks:load', function(){
 
     received: function(data) {
       if (gon.current_user_id != data.comment.user_id) {
-        var commentedId = data.commented_id
-        $('.comments-' + commentedId).append(JST['templates/comment']({
-          comment: data.comment,
-          user: data.user
-        }))
+        var commentedId = data.comment.commentable_id
+        if (data.comment.commentable_type === 'Answer' ) {
+          $('.comments-answer-' + commentedId).append(data.html);
+        } else if (data.comment.commentable_type === 'Question' ){
+          $('.comments-question-' + commentedId).append(data.html);
+        }
       }
     }
   });

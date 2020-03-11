@@ -25,13 +25,18 @@ class CommentsController < ApplicationController
     return if @comment.errors.any?
 
     id = @commented.is_a?(Question) ? @commented.id : @commented.question.id
-
-    data = {
-      comment: @comment,
-      commented_id: "#{@commented.class.to_s.downcase}-#{@commented.id}",
-      user: @comment.user
-    }
     
-    ActionCable.server.broadcast("comment_question_#{id}", data)
+    ActionCable.server.broadcast(
+      "comment_question_#{id}",
+      html: html(@comment),
+      comment: @comment
+    )
+  end
+
+  def html(comment)
+    ApplicationController.render(
+      partial: 'comments/comment',
+      locals: { comment: comment }
+    )
   end
 end

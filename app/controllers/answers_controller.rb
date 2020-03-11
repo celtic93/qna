@@ -56,23 +56,25 @@ class AnswersController < ApplicationController
   def publish_answer
     return if @answer.errors.any?
 
-    files = @answer.files.map do |file|
-      {
-        id: file.id,
-        url: url_for(file),
-        name: file.filename.to_s
-      }
-    end
+    ActionCable.server.broadcast(
+      "question_#{@answer.question.id}",
+      html: html(@answer),
+      answer: @answer
+    )
+  end
 
-    data = {
-      answer: @answer,
-      rating: @answer.rating,
-      links: @answer.links,
-      files: files,
-      class_name: @answer.class.to_s.downcase,
-      question_user_id: @answer.question.user.id
-    }
-    
-    ActionCable.server.broadcast("question_#{@answer.question.id}", data)
+  def html(answer)
+    wardenize
+    @job_renderer.render(
+      partial: 'answers/answer',
+      locals: { answer: answer }
+    )
+  end
+
+  def wardenize
+    @job_renderer = ::AnswersController.renderer.new
+    renderer_env = @job_renderer.instance_eval { @env }
+    warden = ::Warden::Proxy.new(renderer_env, ::Warden::Manager.new(Rails.application))
+    renderer_env['warden'] = warden
   end
 end
