@@ -2,5 +2,5 @@ $('.question-errors').html('<%= render 'shared/errors', resource: @question %>')
 
 <% if @question.errors.blank? %>
   $('.question').html('<%= j render @question %>');
-  loadGists();
+  window.loadGists();
 <% end %>
