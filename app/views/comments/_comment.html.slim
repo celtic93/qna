@@ -1,1 +1,2 @@
-p "#{comment.body}. #{comment.user.email}"
+- cache [comment, current_user]
+  p "#{comment.body}. #{comment.user.email}"
