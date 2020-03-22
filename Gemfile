@@ -62,6 +62,8 @@ gem 'mini_racer'
 
 gem 'unicorn'
 
+gem 'redis-rails'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.8'
