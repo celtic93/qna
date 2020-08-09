@@ -1,24 +1,55 @@
 # README
+This app based on main idea of stackowerflow: people can ask questions and create answers for them. Created for lerning how some gems and technologies works.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Ruby & Rails version
+  - ruby 2.6.3
+  - rails 5.2.3
 
-Things you may want to cover:
+### Features:
 
-* Ruby version
+**Authentication**
+  - gem 'devise'
+  - gem 'omniauth'
+  - gem 'omniauth-facebook'
+  - gem 'omniauth-twitter'
 
-* System dependencies
+**Authorization with Policies**
+  - gem 'cancancan'
 
-* Configuration
+**App has REST API**
+  - gem 'active_model_serializers'
+  - gem 'doorkeeper'
 
-* Database creation
+**Background jobs (like email)**
+  - gem 'sidekiq'
+  - gem 'whenever'
+  - ActiveJob
 
-* Database initialization
+**Redis for sidekiq and caching**
+  - Fragment caching (Russian doll caching)
+  - gem 'redis-rails'
 
-* How to run the test suite
+**Sphinx search**
+  - gem 'thinking-sphinx'
 
-* Services (job queues, cache servers, search engines, etc.)
+**470 Rspec tests examples**
+  - gem 'rspec-rails'
+  - gem 'factory_girl_rails'
+  - gem 'shoulda-matchers'
 
-* Deployment instructions
+**Feature (acceptance) testing with JS**
+  - gem 'capybara'
+  - gem 'capybara-webkit'
 
-* ...
+**Views written on Slim & Bootstrap**
+  - gem 'slim'
+  - gem 'bootstrap-sass'
+
+**PostgreSQL as main db**
+  - gem 'pg'
+
+**Ready to Deploy**
+  - gem 'capistrano'
+
+### Deployment instructions
+  - cap production deploy
