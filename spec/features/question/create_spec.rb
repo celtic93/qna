@@ -42,7 +42,7 @@ feature 'User can create question', %q{
 
     scenario 'asks a question with errors', js: true do
       click_on 'Ask'
-
+      save_and_open_page
       expect(page).to have_content "Title can't be blank"
     end
   end

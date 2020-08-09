@@ -67,7 +67,7 @@ shared_examples_for 'API resource returnable' do
   end
 
   describe 'links' do
-    let(:link) { links.last }
+    let(:link) { links.first }
     let(:link_response) { resource_response['links'].first }
 
     it 'returns list of links' do

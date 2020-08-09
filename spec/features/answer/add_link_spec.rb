@@ -29,9 +29,8 @@ feature 'User can add links to answer' do
       end
 
       click_on 'Answer'
-      
+
       within '.answers' do
-        expect(page).to have_content 'Ruby Basic question 2'
         expect(page).to have_link 'Google', href: google_url
       end
     end
@@ -75,7 +74,6 @@ feature 'User can add links to answer' do
 
         click_on 'Save'
 
-        expect(page).to have_content 'Ruby Basic question 2'
         expect(page).to have_link 'Google', href: google_url
       end
     end
