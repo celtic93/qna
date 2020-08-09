@@ -1,6 +1,7 @@
-- if current_user
-  p= link_to 'Ask question', new_question_path
+- cache [@questions, current_user]
+  - if can? :create, Question
+    p= link_to 'Ask question', new_question_path
 
-.questions
-  - @questions.each do |question|
-    = render 'question_title', question: question
+  .questions
+    - @questions.each do |question|
+      = render 'question_title', question: question
